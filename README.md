@@ -1,24 +1,24 @@
 # DVSNet
-The major contributors of this repository include [Yu-Shuan Xu](https://github.com/SUSean), [Hsuan-Kung Yang](https://github.com/hellochick), [Tsu-Jui Fu](https://github.com/yesray0216), and Chun-Yi Lee.
+The major contributors of this repository include [Yu-Syuan Xu](https://github.com/SUSean), [Hsuan-Kung Yang](https://github.com/hellochick), [Tsu-Jui Fu](https://github.com/yesray0216), and Chun-Yi Lee.
 ## Introduction
 Dynamic Video Segmentation Network (DVSNet) framework is presented to strike a balance between quality and efficiency for semantic video segmentation.
 The DVSNet framework consists of two convolutional neural networks: a segmentation network (e.g., [DeepLabv2](https://arxiv.org/abs/1606.00915)) and a flow network (e.g.,[FlowNet2](https://arxiv.org/abs/1612.01925)).
 The former generates highly accurate semantic segmentations, but is deeper and slower.
 The latter is much faster than the former, but its output requires further processing to generate less accurate semantic segmentations.
 And DVSNet exploits a decision network (DN) to determine which frame regions should be forwarded to which paths based on a metric called **expected confidence score**.
-The useage of DN proposed an adaptive key frame scheduling policy to adaptively adjust the update period of key frames at runtime.
+The usage of DN proposed an adaptive key frame scheduling policy to adaptively adjust the update period of key frames at runtime.
 
 [**Demo Video**](https://goo.gl/szDUm8)
 
 ## Disclaimer
 This is a modified implementation for DVSNet based on Tensorflow. Please notes that there are some differences to the original implementation:
-(1) Data I/O and Image Preprocessing times are included when calculating fps. (2) It use NHWC data formate rather than NCHW data formate in the original implementation.
+(1) Data I/O and Image Preprocessing times are included when calculating fps. (2) It use NHWC data format rather than NCHW data format in the original implementation.
 These differences cause lower fps than reported in the paper.
 
 ## Requirements
 ### Checkpoint
-Create checkpoint directory and get restore checkpoint from [Google Drive](https://goo.gl/ELcxmf)(270 MB).
-### pip install
+Create checkpoint directory and get restore checkpoint from [Google Drive](https://goo.gl/X1QzVE)(270 MB).
+### pip install in python 2.7
 ```
 pip install tensorflow-gpu==1.4  # for Python 2.7 and GPU
 pip install opencv-python
@@ -38,12 +38,12 @@ List of Args:
 --restore-from: Where restore model parameters from.
 --save_dir:     Where to save segmented output.
 --num-steps:    Number of images in the video.
---overlap:      Overlapping size.
+--overlap:      Overlapping size which must be dividable by 8.
 --target:       Confidence score threshold.
 --dynamic:      Whether to dynamically adjust target
 ```
 Inference time including time of Data I/O and Image Preprocessing: 0.1\~0.05s (10\~20fps)  
-With Intel Xeon E5-2620 CPUs and  NVIDIA GTX 1080 Ti GPU
+With Intel Xeon E5-2620 CPUs and NVIDIA GTX 1080 Ti GPU
 
 ## Citation
 ```
