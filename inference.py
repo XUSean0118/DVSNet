@@ -4,12 +4,10 @@ import argparse
 import os
 import sys
 import time
-
 import tensorflow as tf
 import numpy as np
 import cv2
 from scipy import misc
-
 
 from model import DeepLab_Fast, FlowNets, Decision
 from tools.img_utils import decode_labels
@@ -79,8 +77,6 @@ def main():
     
     # Input.
     image_s, image_f = inputs(args.data_dir, args.data_list, 1, input_size, args.overlap)
-    image_s = tf.squeeze(image_s)
-    image_f = tf.squeeze(image_f)
 
     # Set placeholder 
     image_in = tf.placeholder(tf.float32, [height_overlap, width_overlap, 3])
