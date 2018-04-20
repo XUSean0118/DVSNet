@@ -43,10 +43,10 @@ def main():
     print(args)
 
     path = args.data_dir
-    trX = np.load(path+'trainX.npy')
-    trY = np.expand_dims(np.load(path+'trainY.npy'),1)
-    vaX = np.load(path+'valX.npy')
-    vaY = np.expand_dims(np.load(path+'valY.npy'),1)
+    trX = np.load(path+'train/X.npy')
+    trY = np.expand_dims(np.load(path+'train/Y.npy'),1)
+    vaX = np.load(path+'val/X.npy')
+    vaY = np.expand_dims(np.load(path+'val/Y.npy'),1)
 
     tf.reset_default_graph()
     model = Decision()

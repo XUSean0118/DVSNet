@@ -99,10 +99,10 @@ def main():
                 if score > args.clip:
                     ft_list.append(ft)
                     score_list.append(score)
-            break
+                    
         # save confidence score and feature
-        np.save(args.save_dir+dataset+"X", ft_list) 
-        np.save(args.save_dir+dataset+"Y", score_list)
+        np.save(args.save_dir+dataset+"/X", ft_list) 
+        np.save(args.save_dir+dataset+"/Y", score_list)
 
 if __name__ == '__main__':
     main()
