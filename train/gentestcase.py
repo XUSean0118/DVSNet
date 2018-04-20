@@ -43,6 +43,8 @@ def get_arguments():
                         help="Number of classes to predict (including background).")
     parser.add_argument("--num-steps", type=int, default=NUM_STEPS,
                         help="Number of images in the video.")
+    parser.add_argument("--clip", type=float, default=0.0,
+                        help="trim extreme confidence score")
     return parser.parse_args()
 
 def load(saver, sess, ckpt_path):
@@ -94,18 +96,18 @@ def main():
     # Predictions.
     raw_pred = net.layers['fc_out']
     raw_output = tf.image.resize_bilinear(raw_pred, output_size)
-    raw_output = tf.cast(tf.argmax(raw_output, axis=3), tf.uint8)
+    raw_output = tf.argmax(raw_output, axis=3)
 
     flows = flowNet.inference()
     warp_pred = warp(tf.image.resize_bilinear(raw_pred, flows['flow'].get_shape()[1:3]), flows['flow'])
     scale_pred = tf.multiply(warp_pred, flows['scale'])
     wrap_output = tf.image.resize_bilinear(scale_pred, output_size)
-    output = tf.cast(tf.argmax(wrap_output, axis=3), tf.uint8)
+    output = tf.argmax(wrap_output, axis=3)
 
     # Calculate confidence score.
     wight = tf.where(tf.equal(raw_output, 255),tf.zeros_like(raw_output),tf.ones_like(raw_output))
     accuracy = tf.where(tf.equal(output, raw_output),wight,tf.zeros_like(raw_output))
-    average = tf.reduce_sum(tf.contrib.layers.flatten(accuracy), 1)/tf.reduce_sum(tf.contrib.layers.flatten(wight), 1)
+    average = tf.divide(tf.reduce_sum(tf.contrib.layers.flatten(accuracy), 1),tf.reduce_sum(tf.contrib.layers.flatten(wight), 1))
 
     # Set up tf session and initialize variables.
     config = tf.ConfigProto()
@@ -137,8 +139,9 @@ def main():
                         feed_dict={image1_filename:f1, image2_filename:f2})
 
         for i in range(4):
-            ft_list.append(flow_feature[i])
-            score_list.append(score[i])
+            if score[i] > args.clip:
+                ft_list.append(flow_feature[i])
+                score_list.append(score[i])
 
         if step % 100 == 0:
             print(step)

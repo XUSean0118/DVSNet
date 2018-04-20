@@ -17,7 +17,7 @@ TRAIN_DATA_DIRECTORY = "./train/"
 VAL_DATA_DIRECTORY = "./val/"
 EPOCHS = 100
 BATCH_SIZE = 32
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.002
 DECAY = 0.99
 
 def get_arguments():
@@ -51,7 +51,10 @@ def main():
     trY = np.expand_dims(np.load(trpath+'Y.npy'),1)
     vaX = np.load(vapath+'X.npy')
     vaY = np.expand_dims(np.load(vapath+'Y.npy'),1)
-
+    print(trX.shape)
+    print(trY)
+    print(vaX.shape)
+    print(vaY.shape)
     tf.reset_default_graph()
     model = Decision()
 

@@ -75,19 +75,18 @@ class Decision:
         return acc
         
     def sampleIterator(self, dX, dY):
-            n = dX.shape[0]
-            lst = [i for i in range(n)]
+        n = dX.shape[0]
+        lst = [i for i in range(n)]
+        
+        while True:
+            random.shuffle(lst)
             
-            while True:
-                random.shuffle(lst)
+            for i in range(n):
+                i = lst[i]
                 
-                for i in range(n):
-                    i = lst[i]
-                    
-                    yield dX[i], dY[i]
+                yield dX[i], dY[i]
 
     def batchIterator(self, dX, dY, batchSize):
-        
         sample = self.sampleIterator(dX, dY)
         
         while True:
