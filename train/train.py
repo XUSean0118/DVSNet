@@ -13,7 +13,8 @@ sys.path.append(ROOT_DIR)  # To find local version of the library
 
 from model import Decision
 
-DATA_DIRECTORY = "./"
+TRAIN_DATA_DIRECTORY = "./train/"
+VAL_DATA_DIRECTORY = "./val/"
 EPOCHS = 100
 BATCH_SIZE = 32
 LEARNING_RATE = 0.001
@@ -26,8 +27,10 @@ def get_arguments():
       A list of parsed arguments.
     """
     parser = argparse.ArgumentParser(description="Calculate confidence score")
-    parser.add_argument("--data-dir", type=str, default=DATA_DIRECTORY,
-                        help="Path to the directory containing the testcase.")
+    parser.add_argument("--train-data-dir", type=str, default=TRAIN_DATA_DIRECTORY,
+                        help="Path to the directory containing the train testcase.")
+    parser.add_argument("--val-data-dir", type=str, default=VAL_DATA_DIRECTORY,
+                        help="Path to the directory containing the validation testcase.")
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE,
                         help="Number of images sent to the network in one step.")
     parser.add_argument("--learning-rate", type=float, default=LEARNING_RATE,
@@ -42,11 +45,12 @@ def main():
     args = get_arguments()
     print(args)
 
-    path = args.data_dir
-    trX = np.load(path+'train/X.npy')
-    trY = np.expand_dims(np.load(path+'train/Y.npy'),1)
-    vaX = np.load(path+'val/X.npy')
-    vaY = np.expand_dims(np.load(path+'val/Y.npy'),1)
+    trpath = args.train_data_dir
+    vapath = args.val_data_dir
+    trX = np.load(trpath+'X.npy')
+    trY = np.expand_dims(np.load(trpath+'Y.npy'),1)
+    vaX = np.load(vapath+'X.npy')
+    vaY = np.expand_dims(np.load(vapath+'Y.npy'),1)
 
     tf.reset_default_graph()
     model = Decision()
@@ -69,7 +73,7 @@ def main():
     for e in range(args.epochs):
         totalLoss = 0
         
-        for b in trange(batchNum):
+        for b in range(batchNum):
             bX, bY = next(batch)
             totalLoss += model.train(sess, bX, bY, lr)
             

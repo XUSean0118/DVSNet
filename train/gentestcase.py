@@ -105,7 +105,7 @@ def main():
     # Calculate confidence score.
     wight = tf.where(tf.equal(raw_output, 255),tf.zeros_like(raw_output),tf.ones_like(raw_output))
     accuracy = tf.where(tf.equal(output, raw_output),wight,tf.zeros_like(raw_output))
-    average = tf.reduce_sum(accuracy)/tf.reduce_sum(wight)
+    average = tf.reduce_sum(tf.contrib.layers.flatten(accuracy), 1)/tf.reduce_sum(tf.contrib.layers.flatten(wight), 1)
 
     # Set up tf session and initialize variables.
     config = tf.ConfigProto()
@@ -135,10 +135,11 @@ def main():
 
         flow_feature, seg_feature, score = sess.run([flows['feature'], net.layers['fc1_voc12'], average],
                         feed_dict={image1_filename:f1, image2_filename:f2})
+
         for i in range(4):
             ft_list.append(flow_feature[i])
             score_list.append(score[i])
-            
+
         if step % 100 == 0:
             print(step)
     # save confidence score and feature

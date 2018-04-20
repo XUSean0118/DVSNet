@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import random
 
 class Decision:
     def __init__(self, feature_size=[4,8]):
@@ -9,7 +10,7 @@ class Decision:
         
         with tf.variable_scope('controlAgent'):
             self.inputs = tf.placeholder(tf.float32, [None, feature_size[0], feature_size[1], 384])
-            self.outputs = tf.placeholder(tf.float32, [None])
+            self.outputs = tf.placeholder(tf.float32, [None, 1])
             self.lr = tf.placeholder(tf.float32)
             self.dp = tf.placeholder(tf.float32)
             
@@ -57,7 +58,7 @@ class Decision:
         return pd
 
     def accuracy(self, sess, dX, dY, batchSize):
-        batch = batchIterator(dX, dY, batchSize)
+        batch = self.batchIterator(dX, dY, batchSize)
         batchNum = dX.shape[0]//batchSize
         acc = 0
         predy = []
@@ -72,21 +73,22 @@ class Decision:
         acc /= batchNum
         
         return acc
-
-    def sampleIterator(dX, dY):
-        n = dX.shape[0]
-        lst = [i for i in range(n)]
         
-        while True:
-            rd.shuffle(lst)
+    def sampleIterator(self, dX, dY):
+            n = dX.shape[0]
+            lst = [i for i in range(n)]
             
-            for i in range(n):
-                i = lst[i]
+            while True:
+                random.shuffle(lst)
                 
-                yield dX[i], dY[i]
+                for i in range(n):
+                    i = lst[i]
+                    
+                    yield dX[i], dY[i]
 
-    def batchIterator(dX, dY, batchSize):
-        sample = sampleIterator(dX, dY)
+    def batchIterator(self, dX, dY, batchSize):
+        
+        sample = self.sampleIterator(dX, dY)
         
         while True:
             bX = np.zeros((batchSize, 4,8,384))
