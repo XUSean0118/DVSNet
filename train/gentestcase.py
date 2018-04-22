@@ -39,8 +39,6 @@ def get_arguments():
                         help="Where restore model parameters from.")
     parser.add_argument("--save_dir", type=str, default=SAVE_DIR,
                         help="Where to save segmented output.")
-    parser.add_argument("--num-classes", type=int, default=NUM_CLASSES,
-                        help="Number of classes to predict (including background).")
     parser.add_argument("--num-steps", type=int, default=NUM_STEPS,
                         help="Number of images in the video.")
     parser.add_argument("--clip", type=float, default=80.0,
@@ -87,7 +85,7 @@ def main():
     current_frame = tf.concat([current_frame[:,:256,:512,:],current_frame[:,:256,512:,:],current_frame[:,256:,:512,:],current_frame[:,256:,512:,:]],0)
 
     # Create network.
-    net = DeepLab_Fast({'data': image_batch}, num_classes=args.num_classes)
+    net = DeepLab_Fast({'data': image_batch}, num_classes=NUM_CLASSES)
     flowNet = FlowNets(current_frame, key_frame)
 
     # Which variables to load.

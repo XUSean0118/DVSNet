@@ -76,6 +76,7 @@ List of Args:
 ```
 --train-data-dir:   Path to the training testcases.
 --val-data-dir:     Path to the validation testcases.
+--save-dir:         Where to save decision model.
 --batch-size:       Number of testcases sent to the network in one step.
 --learning-rate:    Learning rate for training.
 --epochs:           Number of epochs.

@@ -32,6 +32,8 @@ def get_arguments():
                         help="Path to the directory containing the train testcase.")
     parser.add_argument("--val-data-dir", type=str, default=VAL_DATA_DIRECTORY,
                         help="Path to the directory containing the validation testcase.")
+    parser.add_argument("--save_dir", type=str, default=SAVE_DIR,
+                        help="Where to save decision model.")
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE,
                         help="Number of images sent to the network in one step.")
     parser.add_argument("--learning-rate", type=float, default=LEARNING_RATE,
