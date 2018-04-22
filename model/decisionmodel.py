@@ -3,12 +3,12 @@ import numpy as np
 import random
 
 class Decision:
-    def __init__(self, feature_size=[4,8]):
+    def __init__(self, feature_size=[4,8], is_training = False):
         
         def lrelu(x, alpha=0.1):
             return tf.nn.relu(x)-alpha*tf.nn.relu(-x)
         
-        with tf.variable_scope('controlAgent'):
+        with tf.variable_scope('decision'):
             self.inputs = tf.placeholder(tf.float32, [None, feature_size[0], feature_size[1], 384])
             self.outputs = tf.placeholder(tf.float32, [None, 1])
             self.lr = tf.placeholder(tf.float32)
@@ -42,9 +42,9 @@ class Decision:
                                                         weights_initializer=tf.contrib.layers.variance_scaling_initializer(),
                                                         biases_initializer=tf.constant_initializer(0.1),
                                                         activation_fn=lrelu)
-            
-            self.loss = tf.losses.mean_squared_error(labels=self.outputs, predictions=self.fc3)
-            self.optimizer = tf.train.AdamOptimizer(self.lr).minimize(self.loss)
+            if is_training:
+                self.loss = tf.losses.mean_squared_error(labels=self.outputs, predictions=self.fc3)
+                self.optimizer = tf.train.AdamOptimizer(self.lr).minimize(self.loss)
 
     def train(self, sess, bX, bY, lr):
         _, loss = sess.run([self.optimizer, self.loss], 

@@ -77,13 +77,15 @@ def main():
     
     # Input.
     image_s, image_f = inputs(args.data_dir, args.data_list, 1, input_size, args.overlap)
+    image_s = tf.squeeze(image_s)
+    image_f = tf.squeeze(image_f)
 
     # Set placeholder 
     image_in = tf.placeholder(tf.float32, [height_overlap, width_overlap, 3])
     key_image = tf.placeholder(tf.float32, [4, height_overlap//2, width_overlap//2, 3])
     key_pred = tf.placeholder(tf.float32, [1, height_overlap//16, width_overlap//16, NUM_CLASSES])
-    flow_fields = tf.placeholder(tf.float32, [1, height_overlap//8, width_overlap//8, 2])
-    scale_fields = tf.placeholder(tf.float32, [1, height_overlap//8, width_overlap//8, NUM_CLASSES])
+    flow_field = tf.placeholder(tf.float32, [1, height_overlap//8, width_overlap//8, 2])
+    scale_field = tf.placeholder(tf.float32, [1, height_overlap//8, width_overlap//8, NUM_CLASSES])
     output = tf.placeholder(tf.uint8, [1, input_size[0], input_size[1], 1])
 
     # Input image.
@@ -106,11 +108,11 @@ def main():
         
     # Estimation Flow and feature for decision network.
     flows = flowNet.inference()
-    flow_features = tf.image.resize_bilinear(flows['feature'],[4,8])
+    flow_feature = tf.image.resize_bilinear(flows['feature'],[4,8])
 
     # Spatial warping path.
-    warp_pred = warp(tf.image.resize_bilinear(key_pred, flow_fields.get_shape()[1:3]), flow_fields)
-    scale_pred = tf.multiply(warp_pred, scale_fields)
+    warp_pred = warp(key_pred, flow_field)
+    scale_pred = tf.multiply(warp_pred, scale_field)
     wrap_output = tf.image.resize_bilinear(scale_pred, [height_overlap, width_overlap])
     wrap_max = tf.reduce_max(wrap_output, axis=3, keep_dims=True)
     wrap_output = tf.cast(tf.argmax(wrap_output, axis=3), tf.uint8)
@@ -142,7 +144,7 @@ def main():
 
     # Register
     targets = [args.target, args.target, args.target, args.target]
-    key_output = [None,None,None,None]
+    key_outputs = [None,None,None,None]
     preds = np.zeros((1,input_size[0],input_size[1],1), dtype=np.uint8)
     preds_value = np.zeros((1,input_size[0],input_size[1],1), dtype=np.float32)
     region = 4
@@ -152,27 +154,27 @@ def main():
     for step in range(args.num_steps):
         start_time = time.time()
         if step == 0 :
-            image_input, key_input = sess.run([image_s, image_f])
+            image_inputs, key_inputs = sess.run([image_s, image_f])
             for i in range(region):
                 print("Initial region {}".format(i))
-                key_output[i], pred, max_value = sess.run([raw_pred, seg_pred, raw_max],
-                                feed_dict={image_in:image_input[i]})
+                key_outputs[i], pred, max_value = sess.run([raw_pred, seg_pred, raw_max],
+                                feed_dict={image_in:image_inputs[i]})
                 overlap4(i, pred, max_value, preds, preds_value, input_size=[height, width], overlap=args.overlap)
 
         else:
-            image_input, key_tmp, flow_feature, flow_field, scale_field = sess.run([image_s, image_f, flow_features, flows['flow'], flows['scale']],
-                            feed_dict={key_image:key_input})
-            pred_score = np.squeeze(decisionNet.pred(sess, flow_feature))
+            image_inputs, key_tmps, flow_features, flow_fields, scale_fields = sess.run([image_s, image_f, flow_feature, flows['flow'], flows['scale']],
+                            feed_dict={key_image:key_inputs})
+            pred_scores = np.squeeze(decisionNet.pred(sess, flow_features))
             for i in range(region):
-                print("step {} region {} predict score: {:.3}  target: {:.3}".format(step, i, pred_score[i], targets[i]))
-                if pred_score[i] < targets[i]:
+                print("step {} region {} predict score: {:.3}  target: {:.3}".format(step, i, pred_scores[i], targets[i]))
+                if pred_scores[i] < targets[i]:
                     if args.dynamic:
                         targets[i] -= 1
                     seg_step += 1
                     print("Segmentation Path")
-                    key_input[i] = key_tmp[i]
-                    key_output[i], pred, max_value = sess.run([raw_pred, seg_pred, raw_max],
-                                    feed_dict={image_in:image_input[i]})
+                    key_inputs[i] = key_tmps[i]
+                    key_outputs[i], pred, max_value = sess.run([raw_pred, seg_pred, raw_max],
+                                    feed_dict={image_in:image_inputs[i]})
 
                 else:
                     if args.dynamic:
@@ -180,8 +182,8 @@ def main():
                     flow_step += 1
                     print("Spatial Warping Path")
                     pred, max_value = sess.run([flow_pred, wrap_max],
-                                    feed_dict={flow_fields:np.expand_dims(flow_field[i], 0), 
-                                    scale_fields:np.expand_dims(scale_field[i], 0), key_pred:key_output[i]})
+                                    feed_dict={flow_field:np.expand_dims(flow_fields[i], 0), 
+                                    scale_field:np.expand_dims(scale_fields[i], 0), key_pred:key_outputs[i]})
                 overlap4(i, pred, max_value, preds, preds_value, input_size=[height, width], overlap=args.overlap)
         
         # measure time

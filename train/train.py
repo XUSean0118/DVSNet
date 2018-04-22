@@ -15,6 +15,7 @@ from model import Decision
 
 TRAIN_DATA_DIRECTORY = "./train/"
 VAL_DATA_DIRECTORY = "./val/"
+SAVE_DIR = './decisionModel/'
 EPOCHS = 100
 BATCH_SIZE = 32
 LEARNING_RATE = 0.002
@@ -51,12 +52,9 @@ def main():
     trY = np.expand_dims(np.load(trpath+'Y.npy'),1)
     vaX = np.load(vapath+'X.npy')
     vaY = np.expand_dims(np.load(vapath+'Y.npy'),1)
-    print(trX.shape)
-    print(trY)
-    print(vaX.shape)
-    print(vaY.shape)
+
     tf.reset_default_graph()
-    model = Decision()
+    model = Decision(is_training = True)
 
     # Set up tf session and initialize variables.
     config = tf.ConfigProto()
@@ -89,10 +87,10 @@ def main():
         tmp = model.accuracy(sess, vaX, vaY, args.batch_size)
         if best > tmp:
             best = tmp
-            saver.save(sess, './controlAgentModel/controlAgent.ckpt')
+            saver.save(sess,SAVE_DIR+'model.ckpt')
             save = e+1
         print('ValidAccuracy %f' % (tmp))
-    saver.save(sess, './controlAgentModel/controlAgent_final.ckpt')
+    saver.save(sess, SAVE_DIR+'modelFinall.ckpt')
 
 if __name__ == '__main__':
     main()

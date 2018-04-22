@@ -43,7 +43,7 @@ def get_arguments():
                         help="Number of classes to predict (including background).")
     parser.add_argument("--num-steps", type=int, default=NUM_STEPS,
                         help="Number of images in the video.")
-    parser.add_argument("--clip", type=float, default=0.0,
+    parser.add_argument("--clip", type=float, default=80.0,
                         help="trim extreme confidence score")
     return parser.parse_args()
 

@@ -66,7 +66,8 @@ def get_batchindex(b,h,w):
 	return np.array(index_list)
 
 def warp(key_feature, flow):
-	shape = key_feature.get_shape().as_list()
+	shape = flow.get_shape().as_list()
+	key_feature = tf.image.resize_bilinear(key_feature, shape[1:3])
 	batch_size = shape[0]
 	height = shape[1]
 	width = shape[2]
