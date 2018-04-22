@@ -39,6 +39,8 @@ def get_arguments():
                         help="Path to the file listing the images in the dataset.")
     parser.add_argument("--restore-from", type=str, default=RESTORE_FROM,
                         help="Where restore model parameters from.")
+    parser.add_argument("--decision-from", type=str, default=RESTORE_FROM,
+                        help="Where restore decision model parameters from.")
     parser.add_argument("--save_dir", type=str, default=SAVE_DIR,
                         help="Where to save segmented output.")
     parser.add_argument("--num-steps", type=int, default=NUM_STEPS,
@@ -129,9 +131,19 @@ def main():
     sess.run(tf.local_variables_initializer())
     
     # Load weights.
+    decision_var = [v for v in restore_var if 'decision' in v.name]
+    model_var = [v for v in restore_var if 'warp' not in v.name and 'decision' not in v.name]
+
     ckpt = tf.train.get_checkpoint_state(args.restore_from)
     if ckpt and ckpt.model_checkpoint_path:
-        loader = tf.train.Saver(var_list=restore_var)
+        loader = tf.train.Saver(var_list=model_var)
+        load(loader, sess, ckpt.model_checkpoint_path)
+    else:
+        print('No checkpoint file found.')
+
+	ckpt = tf.train.get_checkpoint_state(args.decision_from)
+    if ckpt and ckpt.model_checkpoint_path:
+        loader = tf.train.Saver(var_list=decision_var)
         load(loader, sess, ckpt.model_checkpoint_path)
     else:
         print('No checkpoint file found.')

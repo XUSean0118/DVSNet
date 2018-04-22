@@ -36,14 +36,15 @@ python inference.py --data-dir=cityscape_video_dir --data-list=cityscape_video_l
 ```
 List of Args:
 ```
---data-dir:     Path to the directory containing the dataset.
---data-list:    Path to the file listing the images in the dataset.
---restore-from: Where restore model parameters from.
---save_dir:     Where to save segmented output.
---num-steps:    Number of images in the video.
---overlap:      Overlapping size which must be dividable by 8.
---target:       Confidence score threshold.
---dynamic:      Whether to dynamically adjust target
+--data-dir:      Path to the directory containing the dataset.
+--data-list:     Path to the file listing the images in the dataset.
+--restore-from:  Where restore model parameters from.
+--decision-from: Where restore decision model parameters from (default same as restore-from).
+--save_dir:      Where to save segmented output.
+--num-steps:     Number of images in the video.
+--overlap:       Overlapping size which must be dividable by 8.
+--target:        Confidence score threshold.
+--dynamic:       Whether to dynamically adjust target
 ```
 Inference time including time of Data I/O and Image Preprocessing: 0.1\~0.05s (10\~20fps)  
 With Intel Xeon E5-2620 CPUs and NVIDIA GTX 1080 Ti GPU
@@ -74,13 +75,13 @@ python train.py --train-data-dir=train_testcase_dir --val-data-dir=val_testcase_
 ```
 List of Args:
 ```
---train-data-dir:   Path to the training testcases.
---val-data-dir:     Path to the validation testcases.
---save-dir:         Where to save decision model.
---batch-size:       Number of testcases sent to the network in one step.
---learning-rate:    Learning rate for training.
---epochs:           Number of epochs.
---decay:            Learning rate decay.
+--train-data-dir: Path to the training testcases.
+--val-data-dir:   Path to the validation testcases.
+--save-dir:       Where to save decision model.
+--batch-size:     Number of testcases sent to the network in one step.
+--learning-rate:  Learning rate for training.
+--epochs:         Number of epochs.
+--decay:          Learning rate decay.
 ```
 
 ## Citation
