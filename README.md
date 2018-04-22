@@ -18,7 +18,9 @@ These differences cause lower fps than reported in the paper.
 
 ## Requirements
 ### Checkpoint
-Create checkpoint directory and get restore checkpoint from [Google Drive](https://goo.gl/X1QzVE)(270 MB).
+Create checkpoint directory and get restore checkpoint from [Google Drive](https://goo.gl/X1QzVE).  
+Checkpoint all in one (DVSNet).  
+Checkpoint without decision network (finetune).
 ### pip install in python 2.7
 ```
 pip install tensorflow-gpu==1.4  # for Python 2.7 and GPU
@@ -45,6 +47,40 @@ List of Args:
 ```
 Inference time including time of Data I/O and Image Preprocessing: 0.1\~0.05s (10\~20fps)  
 With Intel Xeon E5-2620 CPUs and NVIDIA GTX 1080 Ti GPU
+
+## Train
+```
+cd train
+```
+### step 1
+Generate testcases(confidence score) for training decision network:
+``` 
+python gentestcase.py --data-dir=cityscape_dir --data-list=cityscape_list
+```
+List of Args:
+```
+--data-dir:     Path to the directory containing the dataset.
+--data-list:    Path to the file listing the images in the dataset.
+--restore-from: Where restore finetune(segmentation + flow) model parameters from.
+--save_dir:     Where to save testcases.
+--num-steps:    Number of generates testcases.
+--clip:         Trim extreme testcases.
+```
+
+### step 2
+Train decision network:
+``` 
+python train.py --train-data-dir=train_testcase_dir --val-data-dir=val_testcase_dir
+```
+List of Args:
+```
+--train-data-dir:   Path to the training testcases.
+--val-data-dir:     Path to the validation testcases.
+--batch-size:       Number of testcases sent to the network in one step.
+--learning-rate:    Learning rate for training.
+--epochs:           Number of epochs.
+--decay:            Learning rate decay.
+```
 
 ## Citation
 ```
