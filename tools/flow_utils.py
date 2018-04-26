@@ -91,8 +91,8 @@ def warp(key_feature, flow):
 		thetay =  y_index - y_floor
 		_thetay = 1.0 - thetay
 		coeff_ff = _thetax * _thetay
-		coeff_cf = thetax * _thetay
-		coeff_fc = _thetax * thetay
+		coeff_cf = _thetax * thetay
+		coeff_fc = thetax * _thetay
 		coeff_cc = thetax * thetay
 		ff = tf.gather_nd(key_feature, flow_index_ff) * coeff_ff
 		cf = tf.gather_nd(key_feature, flow_index_cf) * coeff_cf
