@@ -31,15 +31,15 @@ def get_arguments():
       A list of parsed arguments.
     """
     parser = argparse.ArgumentParser(description="Generate predict testcases")
-    parser.add_argument("--data-dir", type=str, default=DATA_DIRECTORY,
+    parser.add_argument("--data_dir", type=str, default=DATA_DIRECTORY,
                         help="Path to the directory containing the dataset.")
-    parser.add_argument("--data-list", type=str, default=DATA_LIST_PATH,
+    parser.add_argument("--data_list", type=str, default=DATA_LIST_PATH,
                         help="Path to the file listing the images in the dataset.")
-    parser.add_argument("--restore-from", type=str, default=RESTORE_FROM,
+    parser.add_argument("--restore_from", type=str, default=RESTORE_FROM,
                         help="Where restore model parameters from.")
     parser.add_argument("--save_dir", type=str, default=SAVE_DIR,
                         help="Where to save segmented output.")
-    parser.add_argument("--num-steps", type=int, default=NUM_STEPS,
+    parser.add_argument("--num_steps", type=int, default=NUM_STEPS,
                         help="Number of images in the video.")
     parser.add_argument("--clip", type=float, default=80.0,
                         help="trim extreme confidence score")

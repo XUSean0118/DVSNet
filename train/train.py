@@ -28,15 +28,15 @@ def get_arguments():
       A list of parsed arguments.
     """
     parser = argparse.ArgumentParser(description="Calculate confidence score")
-    parser.add_argument("--train-data-dir", type=str, default=TRAIN_DATA_DIRECTORY,
+    parser.add_argument("--train_data_dir", type=str, default=TRAIN_DATA_DIRECTORY,
                         help="Path to the directory containing the train testcase.")
-    parser.add_argument("--val-data-dir", type=str, default=VAL_DATA_DIRECTORY,
+    parser.add_argument("--val_data_dir", type=str, default=VAL_DATA_DIRECTORY,
                         help="Path to the directory containing the validation testcase.")
     parser.add_argument("--save_dir", type=str, default=SAVE_DIR,
                         help="Where to save decision model.")
-    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE,
+    parser.add_argument("--batch_size", type=int, default=BATCH_SIZE,
                         help="Number of images sent to the network in one step.")
-    parser.add_argument("--learning-rate", type=float, default=LEARNING_RATE,
+    parser.add_argument("--learning_rate", type=float, default=LEARNING_RATE,
                         help="Learning rate for training.")
     parser.add_argument("--epochs", type=int, default=EPOCHS,
                         help="Number of epochs.")
