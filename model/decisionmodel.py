@@ -96,4 +96,4 @@ class Decision:
             for i in range(batchSize):
                 bX[i], bY[i] = next(sample)
             
-            yield bX, bY*100
+            yield bX, bY

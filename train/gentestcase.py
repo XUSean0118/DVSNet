@@ -41,7 +41,7 @@ def get_arguments():
                         help="Where to save segmented output.")
     parser.add_argument("--num_steps", type=int, default=NUM_STEPS,
                         help="Number of images in the video.")
-    parser.add_argument("--clip", type=float, default=80.0,
+    parser.add_argument("--clip", type=float, default=0.0,
                         help="trim extreme confidence score")
     return parser.parse_args()
 
@@ -139,7 +139,7 @@ def main():
         for i in range(4):
             if score[i] > args.clip:
                 ft_list.append(flow_feature[i])
-                score_list.append(score[i])
+                score_list.append(score[i]*100)
 
         if step % 100 == 0:
             print(step)
