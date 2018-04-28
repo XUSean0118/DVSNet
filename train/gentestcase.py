@@ -30,7 +30,7 @@ def get_arguments():
     Returns:
       A list of parsed arguments.
     """
-    parser = argparse.ArgumentParser(description="Generate predict testcases")
+    parser = argparse.ArgumentParser(description="Generate Testcases")
     parser.add_argument("--data_dir", type=str, default=DATA_DIRECTORY,
                         help="Path to the directory containing the dataset.")
     parser.add_argument("--data_list", type=str, default=DATA_LIST_PATH,

@@ -27,7 +27,7 @@ def get_arguments():
     Returns:
       A list of parsed arguments.
     """
-    parser = argparse.ArgumentParser(description="Calculate confidence score")
+    parser = argparse.ArgumentParser(description="Train Decision Network")
     parser.add_argument("--train_data_dir", type=str, default=TRAIN_DATA_DIRECTORY,
                         help="Path to the directory containing the train testcase.")
     parser.add_argument("--val_data_dir", type=str, default=VAL_DATA_DIRECTORY,
