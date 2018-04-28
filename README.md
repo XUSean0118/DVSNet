@@ -36,12 +36,12 @@ python inference.py --data-dir=cityscape_video_dir --data-list=cityscape_video_l
 ```
 List of Args:
 ```
---data-dir:      Path to the directory containing the dataset.
---data-list:     Path to the file listing the images in the dataset.
---restore-from:  Where restore model parameters from.
---decision-from: Where restore decision model parameters from (default same as restore-from).
+--data_dir:      Path to the directory containing the dataset.
+--data_list:     Path to the file listing the images in the dataset.
+--restore_from:  Where restore model parameters from.
+--decision_from: Where restore decision model parameters from (default same as restore_from).
 --save_dir:      Where to save segmented output.
---num-steps:     Number of images in the video.
+--num_steps:     Number of images in the video.
 --overlap:       Overlapping size which must be dividable by 8.
 --target:        Confidence score threshold.
 --dynamic:       Whether to dynamically adjust target
@@ -51,20 +51,20 @@ With Intel Xeon E5-2620 CPUs and NVIDIA GTX 1080 Ti GPU
 
 ## Train
 ```
-cd train
+cd train/
 ```
 ### step 1
-Generate testcases(confidence score) for training decision network:
+Generate testcases (X=flow features, Y=confidence score) for training decision network:
 ``` 
 python gentestcase.py --data-dir=cityscape_dir --data-list=cityscape_list
 ```
 List of Args:
 ```
---data-dir:     Path to the directory containing the dataset.
---data-list:    Path to the file listing the images in the dataset.
---restore-from: Where restore finetune(segmentation + flow) model parameters from.
+--data_dir:     Path to the directory containing the dataset.
+--data_list:    Path to the file listing the images in the dataset.
+--restore_from: Where restore finetune(segmentation + flow) model parameters from.
 --save_dir:     Where to save testcases.
---num-steps:    Number of generates testcases.
+--num_steps:    Number of generates testcases.
 --clip:         Trim extreme testcases.
 ```
 
@@ -75,11 +75,11 @@ python train.py --train-data-dir=train_testcase_dir --val-data-dir=val_testcase_
 ```
 List of Args:
 ```
---train-data-dir: Path to the training testcases.
---val-data-dir:   Path to the validation testcases.
---save-dir:       Where to save decision model.
---batch-size:     Number of testcases sent to the network in one step.
---learning-rate:  Learning rate for training.
+--train_data_dir: Path to the training testcases.
+--val_data_dir:   Path to the validation testcases.
+--save_dir:       Where to save decision model.
+--batch_size:     Number of testcases sent to the network in one step.
+--learning_rate:  Learning rate for training.
 --epochs:         Number of epochs.
 --decay:          Learning rate decay.
 ```
