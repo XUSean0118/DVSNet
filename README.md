@@ -8,7 +8,7 @@ The latter is much faster than the former, but its output requires further proce
 And DVSNet exploits a decision network (DN) to determine which frame regions should be forwarded to which paths based on a metric called **expected confidence score**.
 The usage of DN proposed an adaptive key frame scheduling policy to adaptively adjust the update period of key frames at runtime.
 
-[**Demo Video**](https://goo.gl/szDUm8)  
+[**Demo Video**](https://youtu.be/0YhnGT0HHmY)  
 [![image](demo.gif)](https://goo.gl/szDUm8)
 
 ## Disclaimer
@@ -54,7 +54,7 @@ With Intel Xeon E5-2620 CPUs and NVIDIA GTX 1080 Ti GPU
 cd train/
 ```
 ### step 1
-Generate testcases (X=flow features, Y=confidence score) for training decision network:
+Generate testcases (X=flow features, Y=confidence scores) for training decision network:
 ``` 
 python gentestcase.py --data-dir=cityscape_dir --data-list=cityscape_list
 ```
