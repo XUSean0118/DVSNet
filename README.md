@@ -1,7 +1,7 @@
 # DVSNet
-The major contributors of this repository include [Yu-Syuan Xu](https://github.com/SUSean), [Hsuan-Kung Yang](https://github.com/hellochick), [Tsu-Jui Fu](https://github.com/yesray0216), and Chun-Yi Lee.
+The major contributors of this repository include [Yu-Syuan Xu](https://github.com/SUSean), [Hsuan-Kung Yang](https://github.com/hellochick), [Tsu-Jui Fu](https://github.com/yesray0216), and [Chun-Yi Lee](https://github.com/CYMaxwellLee).
 ## Introduction
-Dynamic Video Segmentation Network (DVSNet) framework is presented to strike a balance between quality and efficiency for semantic video segmentation.
+[Dynamic Video Segmentation Network (DVSNet)](https://arxiv.org/abs/1804.00931) framework is presented to strike a balance between quality and efficiency for semantic video segmentation.
 The DVSNet framework consists of two convolutional neural networks: a segmentation network (e.g., [DeepLabv2](https://arxiv.org/abs/1606.00915)) and a flow network (e.g.,[FlowNet2](https://arxiv.org/abs/1612.01925)).
 The former generates highly accurate semantic segmentations, but is deeper and slower.
 The latter is much faster than the former, but its output requires further processing to generate less accurate semantic segmentations.
