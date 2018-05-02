@@ -23,7 +23,7 @@ Checkpoint all in one (DVSNet).
 Checkpoint without decision network (finetune).
 ### pip install in python 2.7
 ```
-pip install tensorflow-gpu==1.4  # for Python 2.7 and GPU
+pip install tensorflow-gpu==1.4.1  # for Python 2.7 and GPU
 pip install opencv-python
 pip install Pillow
 pip install scipy
