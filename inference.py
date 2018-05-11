@@ -141,7 +141,7 @@ def main():
     else:
         print('No checkpoint file found.')
 
-	ckpt = tf.train.get_checkpoint_state(args.decision_from)
+    ckpt = tf.train.get_checkpoint_state(args.decision_from)
     if ckpt and ckpt.model_checkpoint_path:
         loader = tf.train.Saver(var_list=decision_var)
         load(loader, sess, ckpt.model_checkpoint_path)
