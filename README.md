@@ -8,8 +8,8 @@ The latter is much faster than the former, but its output requires further proce
 And DVSNet exploits a decision network (DN) to determine which frame regions should be forwarded to which paths based on a metric called **expected confidence score**.
 The usage of DN proposed an adaptive key frame scheduling policy to adaptively adjust the update period of key frames at runtime.
 
-[**Demo Video**](https://youtu.be/0YhnGT0HHmY)  
-[![image](demo.gif)](https://goo.gl/szDUm8)
+[**Demo Video**](https://youtu.be/vadYHOyUVXs)  
+[![image](demo.gif)](https://youtu.be/vadYHOyUVXs)
 
 ## Disclaimer
 This is a modified implementation for DVSNet based on Tensorflow. Please notes that there are some differences to the original implementation:
