@@ -10,7 +10,7 @@ The usage of DN proposed an adaptive key frame scheduling policy to adaptively a
 
 [**Demo Video**](https://youtu.be/vadYHOyUVXs)  
 [![image](demo.gif)](https://youtu.be/vadYHOyUVXs)
-
+[![image](compare.gif)](https://youtu.be/vadYHOyUVXs)
 ## Disclaimer
 This is a modified implementation for DVSNet based on Tensorflow. Please notes that there are some differences to the original implementation:
 (1) Data I/O and Image Preprocessing times are included when calculating fps. (2) It use NHWC data format rather than NCHW data format in the original implementation.
