@@ -66,6 +66,7 @@ def main():
     # Set placeholder 
     image1_filename = tf.placeholder(dtype=tf.string)
     image2_filename = tf.placeholder(dtype=tf.string)
+    current_output = tf.placeholder(tf.int64, [4, 512, 1024])
     
     # Read & Decode image
     image1 = tf.image.decode_image(tf.read_file(image1_filename), channels=3)
@@ -103,8 +104,8 @@ def main():
     output = tf.argmax(wrap_output, axis=3)
 
     # Calculate confidence score.
-    wight = tf.where(tf.equal(raw_output, 255),tf.zeros_like(raw_output),tf.ones_like(raw_output))
-    accuracy = tf.where(tf.equal(output, raw_output),wight,tf.zeros_like(raw_output))
+    wight = tf.where(tf.equal(current_output, 255),tf.zeros_like(current_output),tf.ones_like(current_output))
+    accuracy = tf.where(tf.equal(output, current_output),wight,tf.zeros_like(current_output))
     average = tf.divide(tf.reduce_sum(tf.contrib.layers.flatten(accuracy), 1),tf.reduce_sum(tf.contrib.layers.flatten(wight), 1))
 
     # Set up tf session and initialize variables.
@@ -132,9 +133,10 @@ def main():
         f1, f2, f3 = list_file.readline().split('\n')[0].split(' ')
         f1 = os.path.join(args.data_dir, f1)
         f2 = os.path.join(args.data_dir, f2)
-
-        flow_feature, seg_feature, score = sess.run([flows['feature'], net.layers['fc1_voc12'], average],
-                        feed_dict={image1_filename:f1, image2_filename:f2})
+        
+        current_seg = sess.run(raw_output,feed_dict={image1_filename:f2})
+        flow_feature, score = sess.run([flows['feature'], average],
+                        feed_dict={image1_filename:f1, image2_filename:f2, current_output:current_seg})
 
         for i in range(4):
             if score[i] > args.clip:
