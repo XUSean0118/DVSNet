@@ -18,8 +18,8 @@ These differences cause lower fps than reported in the paper.
 
 ## Requirements
 ### Checkpoint
-Create checkpoint directory and get restore checkpoint from [Google Drive](https://goo.gl/X1QzVE).  
-Checkpoint all in one ([DVSNet](https://drive.google.com/open?id=1wzm57Cz751tpdkiKgGz1YSB22CUDPs4T)).  
+Create checkpoint directory and get restore checkpoint from [Google Drive](https://drive.google.com/drive/folders/1rqwzSAMxzxWioXVDEkUzRqylwNxZovwl?usp=sharing).  
+Checkpoint all in one ([DVSNet](https://drive.google.com/file/d/1Csf-rbt-7sXCMOtqQEGjMuc2LtOCzdR1/view?usp=drive_link)).  
 Checkpoint without decision network (finetune).
 ### pip install in python 2.7
 ```
